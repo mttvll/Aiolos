@@ -150,7 +150,7 @@ extension PanelAnimator {
         }
     }
 
-    func removeFromParent(transition: Panel.Transition, completion: @escaping () -> Void) {
+    func removeFromParent(transition: Panel.Transition, animation: (() -> Void)? = nil, completion: @escaping () -> Void) {
         guard self.isTransitioningFromParent == false else { return }
 
         self.isTransitioningFromParent = true
@@ -184,6 +184,10 @@ extension PanelAnimator {
                 self.panel.constraints.updateForPanStart(with: self.panel.view.frame.size)
                 self.panel.view.transform = self.transform(for: edge, size: self.panel.view.frame.size)
             }
+        }
+        
+        if let animation = animation {
+            animator.addAnimations(animation)
         }
 
         animator.addCompletion { _ in

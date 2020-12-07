@@ -165,7 +165,7 @@ public extension Panel {
         }
     }
 
-    func removeFromParent(transition: Transition = .none, completion: (() -> Void)? = nil) {
+    func removeFromParent(transition: Transition = .none, animation: (() -> Void)? = nil, completion: (() -> Void)? = nil) {
         guard self.parent != nil || self.animator.isTransitioningToParent else { return }
 
         if let repositionDelegate = self.repositionDelegate {
@@ -178,7 +178,7 @@ public extension Panel {
 
         self.contentViewController?.beginAppearanceTransition(false, animated: transition.isAnimated)
         self.willMove(toParent: nil)
-        self.animator.removeFromParent(transition: transition) {
+        self.animator.removeFromParent(transition: transition, animation: animation) {
             self.contentViewController?.endAppearanceTransition()
             self.view.removeFromSuperview()
             self.removeFromParent()
